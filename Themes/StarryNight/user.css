@@ -1,0 +1,352 @@
+.button-module__button___hf2qg_marketplace {
+  color: var(--spice-subtext)
+}
+
+.main-entityHeader-backgroundColor {
+  background-color: #00000000 !important;
+}
+
+.main-actionBarBackground-background {
+  background-color: #00000000 !important;
+}
+
+.main-home-homeHeader {
+  background-color: #00000000 !important;
+}
+
+.Root__right-sidebar {
+  width: min-content;
+}
+
+.main-topBar-background {
+  background-color: var(--spice-highlight) !important;
+}
+
+.Root__nav-bar {
+  background-color: #00000000 !important;
+}
+
+.main-trackList-trackListRow:hover {
+  background-color: var(--spice-highlight);
+}
+
+.main-playPauseButton-button {
+  background-color: var(--spice-button);
+}
+
+.rX_OmqCngvY5ZCoYBZgb {
+  background-color: #00000000 !important;
+}
+
+.main-yourLibraryX-entryPoints {
+  background-color: #00000000 !important;
+}
+
+.marketplace-header {
+  background-color: #00000000 !important;
+}
+
+.EmeHQXR87mUskYK6xEde {
+  background-color: #00000000 !important;
+}
+
+.lyrics-lyrics-background {
+  background-color: #00000000 !important;
+}
+
+.main-actionBarBackground-background {
+  background-image: linear-gradient(rgba(var(--spice-rgb-shadow), .6) 0, #000000 100%), #00000000 !important;
+  animation: none !important;
+  -webkit-animation: none !important;
+}
+
+.main-nowPlayingView-contextItemInfo:before,
+.main-entityHeader-background.main-entityHeader-overlay {
+  background-image: none !important;
+  animation: none !important;
+  -webkit-animation: none !important;
+}
+
+.main-entityHeader-background.main-entityHeader-overlay:after {
+  background-image: none !important;
+  animation: none !important;
+  -webkit-animation: none !important;
+}
+
+.pUNc2aOeOQANHrhYa1GU .RDZ61ETnag1ilfZTkVxe {
+  color: #000000 !important;
+}
+
+.playlist-playlist-playlistContent {
+  background: #00000000 !important;
+}
+
+[data-right-sidebar-hidden] .Root__main-view {
+  grid-area: main-view/main-view/main-view/span 1;
+}
+
+
+.Root__main-view {
+  background-color: #00000000 !important;
+}
+
+/* Gradient Main */
+/* .Root__top-container { */
+    /* background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44) 100%), var(--background-noise); */
+    /* background-color: transparent; */
+    /* overflow: hidden; /* Prevent scrolling */
+/* }*/
+
+/* .Root__top-container { */
+    /* background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44)); */
+    /* transition: background-image 1.5s ease-in-out;  */
+/* } */
+
+.Root__top-container {
+    /* background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44)); */
+    background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #000000));
+	transition: background-image 1.5s ease-in-out; /* Idk if neccesery */
+	overflow: hidden; /* Prevent scrolling */
+}
+
+/* :root{ */
+	/* --spice-sidebar: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44)); */
+/* }  */
+
+
+
+
+/* For Changing Cover position */
+.main-coverSlotCollapsed-navAltContainer {
+    -webkit-transform: translateX(-8px);
+        transform: translate(-5px, -20px)}
+
+/* For Changing size of cover */
+.main-nowPlayingWidget-coverArt .cover-art {
+    width: 100px !important; /* New width */
+    height: 100px !important; /* New height */
+}
+
+/* Upiększanie main section */
+.main-entityHeader-backgroundColor, .main-entityHeader-overlay{
+background:none}
+
+
+/* Transparent color in artist tab */
+
+/* .artist-artistOverview-artistOverviewContent{ */
+	/* background-color: transparent; */
+/* } */
+
+
+
+
+/* .main-home-homeHeader  { */
+  /* background-image: linear-gradient(rgba(var(--spice-rgb-shadow), .6) 0, #00000000 100%), var(--background-noise); */
+/* } */
+
+.main-nowPlayingBar-center {
+  width: 100%;
+}
+
+.HD9s7U5E1RLSWKpXmrqx {
+  background-color: #00000000;
+  margin: auto;
+  width: 100%;
+}
+
+.running-animation {
+  animation-play-state: running !important;
+}
+
+/* Nie wyglada dobrze 25% przy nowej wielkosci cover-art */
+.main-coverSlotCollapsed-expandButton {
+  /* right: 25%; */
+}
+
+.player-controls__buttons.player-controls__buttons--new-icons {
+  order: 2;
+}
+
+.playback-bar {
+  order: 1;
+}
+
+.main-tag-container {
+  color: var(--spice-sidebar);
+}
+
+.starrynight-bg-container {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+}
+
+.ffFwfKcPDbmAPLXzxzKq {
+  background-color: #00000000 !important;
+}
+
+@keyframes twinkle1 {
+  0% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  20% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  40% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  60% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  80% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  100% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+}
+
+@keyframes twinkle2 {
+  0% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  20% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  40% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  60% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  80% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  100% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+}
+
+@keyframes twinkle3 {
+  0% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  20% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  40% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  60% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  80% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  100% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+}
+
+@keyframes twinkle4 {
+  0% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  20% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+
+  40% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  60% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  80% {
+    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
+  }
+
+  100% {
+    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+Pure CSS Shooting Star Animation Effect Copyright (c) 2021 by Delroy Prithvi (https://codepen.io/delroyprithvi/pen/LYyJROR)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+.shootingstar {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--spice-shooting-star);
+  border-radius: 50%;
+  animation: animate 3s linear infinite;
+  left: initial;
+  z-index: -1;
+}
+
+.shootingstar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--spice-shooting-star), transparent);
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(315deg) translateX(0);
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(315deg) translateX(-1500px);
+    opacity: 0;
+  }
+}
