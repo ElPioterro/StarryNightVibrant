@@ -8543,19 +8543,25 @@
   var FIXED_DURATION_SETTING_ID = "gradient-anim-fixed-duration";
   var REGULAR_DURATION_SETTING_ID = "gradient-anim-regular-duration";
   var FIRST_DURATION_SETTING_ID = "gradient-anim-first-duration";
+  var HOVER_STYLE_SETTING_ID = "gradient-hover-style";
   var FIRST_TIME_STORAGE_KEY = "gradientThemeFirstTime";
   var NOW_PLAYING_BAR_SELECTOR = ".main-nowPlayingWidget-trackInfo";
   var COVER_ART_SELECTOR = ".main-nowPlayingWidget-coverArt img";
   var DEFAULT_MODE = "Progress-Based";
-  var DEFAULT_SECTIONS = 6;
+  var DEFAULT_SECTIONS = 2;
   var DEFAULT_ANIMATION_TYPE = "Fixed";
   var DEFAULT_FIXED_DURATION = 1.5;
   var DEFAULT_REGULAR_DURATION = 1.5;
   var DEFAULT_FIRST_DURATION = 1.5;
   var DEFAULT_SECONDARY_COLOR = "#142b44";
+  var HOVER_STYLE_OPTIONS = ["Static Black", "Dynamic Gradient"];
+  var DEFAULT_HOVER_STYLE = "Static Black";
   var DEFAULT_DYNAMIC_CARD_BG = "rgba(255, 255, 255, 0.1)";
   var DEFAULT_DYNAMIC_TRACK_BG = "rgba(255, 255, 255, 0.08)";
   var DEFAULT_DYNAMIC_LISTROW_AFTER_BG = "rgba(255, 255, 255, 0.06)";
+  var STATIC_DARK_CARD_BG = "rgba(0, 0, 0, .8)";
+  var STATIC_DARK_TRACK_BG = "rgba(0, 0, 0, .8)";
+  var STATIC_DARK_LISTROW_AFTER_BG = "rgba(0, 0, 0, .8)";
   var currentSection = -1;
   var settings;
   var progressIntervalId = null;
@@ -8563,6 +8569,8 @@
     while (!(Spicetify == null ? void 0 : Spicetify.Platform) || !(Spicetify == null ? void 0 : Spicetify.showNotification) || !(Spicetify == null ? void 0 : Spicetify.Player)) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
+    initializeSettings();
+    localStorage.removeItem(FIRST_TIME_STORAGE_KEY);
     document.documentElement.style.setProperty(
       "--dynamic-card-hover-bg",
       DEFAULT_DYNAMIC_CARD_BG
@@ -8575,8 +8583,6 @@
       "--dynamic-listRow-after-hover-bg",
       DEFAULT_DYNAMIC_LISTROW_AFTER_BG
     );
-    initializeSettings();
-    localStorage.removeItem(FIRST_TIME_STORAGE_KEY);
     try {
       const user = await Spicetify.Platform.UserAPI.getUser();
       Spicetify.showNotification(
@@ -8643,6 +8649,17 @@
       FIRST_DURATION_SETTING_ID,
       "First Animation Duration (seconds, for Dynamic modes)",
       DEFAULT_FIRST_DURATION.toString()
+    );
+    settings.addDropDown(
+      HOVER_STYLE_SETTING_ID,
+      "Element Hover Background Style",
+      HOVER_STYLE_OPTIONS,
+      HOVER_STYLE_OPTIONS.indexOf(DEFAULT_HOVER_STYLE),
+      () => {
+        console.log("Hover style changed");
+        const currentSecondary = getComputedStyle(document.documentElement).getPropertyValue("--gradient-secondary").trim() || DEFAULT_SECONDARY_COLOR;
+        updateHoverBackgrounds(currentSecondary);
+      }
     );
     settings.pushSettings();
   }
@@ -8809,25 +8826,25 @@
       );
     }
   }
-  function morphGradient(newMain, newSecondary, isInitialApplication) {
+  function updateHoverBackgrounds(secondaryColor) {
     const root = document.documentElement;
-    const currentMain = getComputedStyle(root).getPropertyValue("--gradient-main").trim() || "#000000";
-    const currentSecondary = getComputedStyle(root).getPropertyValue("--gradient-secondary").trim() || DEFAULT_SECONDARY_COLOR;
-    if (newMain === currentMain && newSecondary === currentSecondary) {
-      return;
-    }
+    const hoverStyle = settings.getFieldValue(HOVER_STYLE_SETTING_ID) || DEFAULT_HOVER_STYLE;
     try {
-      const cardHoverBgColor = chroma_js_default(newSecondary).darken(1.2).hex("rgba");
-      root.style.setProperty("--dynamic-card-hover-bg", cardHoverBgColor);
-      const trackHoverBgColor = chroma_js_default(newSecondary).darken(0.8).hex("rgba");
-      root.style.setProperty("--dynamic-track-hover-bg", trackHoverBgColor);
-      const listRowAfterHoverBgColor = chroma_js_default(newSecondary).darken(0.5).hex("rgba");
-      root.style.setProperty(
-        "--dynamic-listRow-after-hover-bg",
-        listRowAfterHoverBgColor
-      );
+      let cardBg, trackBg, listRowAfterBg;
+      if (hoverStyle === "Dynamic Gradient") {
+        cardBg = chroma_js_default(secondaryColor).darken(1.2).hex("rgba");
+        trackBg = chroma_js_default(secondaryColor).darken(0.8).hex("rgba");
+        listRowAfterBg = chroma_js_default(secondaryColor).darken(0.5).hex("rgba");
+      } else {
+        cardBg = STATIC_DARK_CARD_BG;
+        trackBg = STATIC_DARK_TRACK_BG;
+        listRowAfterBg = STATIC_DARK_LISTROW_AFTER_BG;
+      }
+      root.style.setProperty("--dynamic-card-hover-bg", cardBg);
+      root.style.setProperty("--dynamic-track-hover-bg", trackBg);
+      root.style.setProperty("--dynamic-listRow-after-hover-bg", listRowAfterBg);
     } catch (error) {
-      console.error("Error setting dynamic card hover color:", error);
+      console.error("Error setting hover background colors:", error);
       root.style.setProperty("--dynamic-card-hover-bg", DEFAULT_DYNAMIC_CARD_BG);
       root.style.setProperty(
         "--dynamic-track-hover-bg",
@@ -8838,6 +8855,16 @@
         DEFAULT_DYNAMIC_LISTROW_AFTER_BG
       );
     }
+  }
+  function morphGradient(newMain, newSecondary, isInitialApplication) {
+    const root = document.documentElement;
+    const currentMain = getComputedStyle(root).getPropertyValue("--gradient-main").trim() || "#000000";
+    const currentSecondary = getComputedStyle(root).getPropertyValue("--gradient-secondary").trim() || DEFAULT_SECONDARY_COLOR;
+    if (newMain === currentMain && newSecondary === currentSecondary) {
+      updateHoverBackgrounds(newSecondary);
+      return;
+    }
+    updateHoverBackgrounds(newSecondary);
     const duration = getAnimationDuration(isInitialApplication);
     console.log(`Morphing gradient to ${newSecondary} over ${duration}s`);
     gsapWithCSS.to(root, {

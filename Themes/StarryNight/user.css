@@ -38,7 +38,6 @@
 .main-card-card[data-context-menu-open="true"] {
   /* Use the variable set by the extension, fallback to a default semi-transparent white */
   background: var(--dynamic-card-hover-bg, rgba(255, 255, 255, 0.1));
-  /* Add a transition for smoother background changes on hover */
   transition: background-color 0.2s ease-out;
 }
 
@@ -46,7 +45,6 @@
 .main-trackList-trackListRow:hover {
   /* Use the variable set by the extension, fallback to a default subtle semi-transparent white */
   background-color: var(--dynamic-track-hover-bg, rgba(255, 255, 255, 0.08));
-  /* Add a transition for smoother background changes on hover */
   transition: background-color 0.2s ease-out;
 }
 
@@ -58,8 +56,6 @@
     --dynamic-listRow-after-hover-bg,
     rgba(255, 255, 255, 0.06)
   );
-  /* Add a transition for smoother background changes */
-  /* Note: Transitioning pseudo-elements requires the base element to trigger */
   transition: background-color 0.2s ease-out;
 }
 

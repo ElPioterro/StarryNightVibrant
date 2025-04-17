@@ -12,6 +12,7 @@ const ANIMATION_TYPE_SETTING_ID = "gradient-anim-type";
 const FIXED_DURATION_SETTING_ID = "gradient-anim-fixed-duration";
 const REGULAR_DURATION_SETTING_ID = "gradient-anim-regular-duration";
 const FIRST_DURATION_SETTING_ID = "gradient-anim-first-duration";
+const HOVER_STYLE_SETTING_ID = "gradient-hover-style";
 const FIRST_TIME_STORAGE_KEY = "gradientThemeFirstTime";
 
 // Selectors
@@ -20,15 +21,26 @@ const COVER_ART_SELECTOR = ".main-nowPlayingWidget-coverArt img";
 
 // Default Values
 const DEFAULT_MODE = "Progress-Based"; // Options: "Static", "Random Static", "Progress-Based"
-const DEFAULT_SECTIONS = 6;
+const DEFAULT_SECTIONS = 2;
 const DEFAULT_ANIMATION_TYPE = "Fixed"; // Options: "Fixed", "Dynamic", "Dynamic Adjusted"
 const DEFAULT_FIXED_DURATION = 1.5;
 const DEFAULT_REGULAR_DURATION = 1.5;
 const DEFAULT_FIRST_DURATION = 1.5;
 const DEFAULT_SECONDARY_COLOR = "#142b44"; // Fallback color
+
+// Hover Style Options & Defaults
+const HOVER_STYLE_OPTIONS = ["Static Black", "Dynamic Gradient"];
+const DEFAULT_HOVER_STYLE = "Static Black"; // <--- Set default hover style
+
+// Fallbacks for CSS Variables (in case setting fails)
 const DEFAULT_DYNAMIC_CARD_BG = "rgba(255, 255, 255, 0.1)"; // Default fallback hover bg
 const DEFAULT_DYNAMIC_TRACK_BG = "rgba(255, 255, 255, 0.08)"; // Default fallback track hover bg
 const DEFAULT_DYNAMIC_LISTROW_AFTER_BG = "rgba(255, 255, 255, 0.06)"; // Default fallback for list row ::after hover
+
+// Static Dark Colors (for the "Static Black" option) - Increased Darkness/Opacity
+const STATIC_DARK_CARD_BG = "rgba(0, 0, 0, .8)"; // Was 0.2, now 35% black
+const STATIC_DARK_TRACK_BG = "rgba(0, 0, 0, .8)"; // Was 0.15, now 30% black
+const STATIC_DARK_LISTROW_AFTER_BG = "rgba(0, 0, 0, .8)"; // Was 0.1, now 25% black
 
 // --- Global State ---
 let currentSection = -1;
@@ -45,8 +57,14 @@ async function main() {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
-  // --- Initialize CSS Variable ---
-  // Set the initial fallback value for the card hover background
+  // Initialize Settings
+  initializeSettings();
+
+  // Reset the "first time" flag on each load/reload
+  localStorage.removeItem(FIRST_TIME_STORAGE_KEY);
+
+  // Initialize CSS Variables with light fallbacks
+  // They will be set correctly by the first call to updateHoverBackgrounds
   document.documentElement.style.setProperty(
     "--dynamic-card-hover-bg",
     DEFAULT_DYNAMIC_CARD_BG
@@ -58,13 +76,7 @@ async function main() {
   document.documentElement.style.setProperty(
     "--dynamic-listRow-after-hover-bg",
     DEFAULT_DYNAMIC_LISTROW_AFTER_BG
-  ); // <--- ADD THIS
-
-  // Initialize Settings
-  initializeSettings();
-
-  // Reset the "first time" flag on each load/reload
-  localStorage.removeItem(FIRST_TIME_STORAGE_KEY);
+  );
 
   // Show message on start.
   try {
@@ -152,6 +164,24 @@ function initializeSettings(): void {
     DEFAULT_FIRST_DURATION.toString()
   );
 
+  // --- ADD HOVER STYLE SETTING ---
+  settings.addDropDown(
+    HOVER_STYLE_SETTING_ID,
+    "Element Hover Background Style",
+    HOVER_STYLE_OPTIONS,
+    HOVER_STYLE_OPTIONS.indexOf(DEFAULT_HOVER_STYLE),
+    () => {
+      // When setting changes, immediately update hover styles based on current gradient
+      console.log("Hover style changed");
+      const currentSecondary =
+        getComputedStyle(document.documentElement)
+          .getPropertyValue("--gradient-secondary")
+          .trim() || DEFAULT_SECONDARY_COLOR;
+      updateHoverBackgrounds(currentSecondary);
+    }
+  );
+  // --- END HOVER STYLE SETTING ---
+
   settings.pushSettings();
 }
 
@@ -215,13 +245,12 @@ function setupProgressTracking(): void {
   }
 }
 
-// Reset logic (e.g., when settings change)
+// --- Reset Logic ---
 function resetThemeLogic(): void {
   console.log("Resetting theme logic due to settings change...");
-  // Re-setup progress tracking based on new mode
   setupProgressTracking();
-  // Re-apply gradient based on current song and new settings
-  applyGradientFromCoverArt(true); // Treat as initial application for the current song with new settings
+  // Re-apply gradient and hover styles based on current song and new settings
+  applyGradientFromCoverArt(true);
 }
 
 // Function to extract colors and apply gradient based on mode
@@ -403,7 +432,55 @@ function updatePaletteForSection(section: number): void {
 
 // --- Helper Functions ---
 
-// Helper function to morph the gradient using GSAP
+/**
+ * Sets the CSS variables for hover backgrounds based on the selected style setting
+ * and the provided secondary color (for dynamic mode).
+ * @param secondaryColor The current secondary gradient color (hex string).
+ */
+function updateHoverBackgrounds(secondaryColor: string): void {
+  const root = document.documentElement;
+  const hoverStyle =
+    (settings.getFieldValue(HOVER_STYLE_SETTING_ID) as string) ||
+    DEFAULT_HOVER_STYLE;
+  // console.log(`Updating hover backgrounds. Style: ${hoverStyle}, Color: ${secondaryColor}`);
+
+  try {
+    let cardBg: string, trackBg: string, listRowAfterBg: string;
+
+    if (hoverStyle === "Dynamic Gradient") {
+      // Calculate dynamic darkened colors
+      cardBg = chroma(secondaryColor).darken(1.2).hex("rgba");
+      trackBg = chroma(secondaryColor).darken(0.8).hex("rgba");
+      listRowAfterBg = chroma(secondaryColor).darken(0.5).hex("rgba");
+      // console.log(`Dynamic hover BGs: Card=${cardBg}, Track=${trackBg}, List=${listRowAfterBg}`);
+    } else {
+      // Use static black colors
+      cardBg = STATIC_DARK_CARD_BG;
+      trackBg = STATIC_DARK_TRACK_BG;
+      listRowAfterBg = STATIC_DARK_LISTROW_AFTER_BG;
+      // console.log(`Static hover BGs: Card=${cardBg}, Track=${trackBg}, List=${listRowAfterBg}`);
+    }
+
+    // Set the CSS variables
+    root.style.setProperty("--dynamic-card-hover-bg", cardBg);
+    root.style.setProperty("--dynamic-track-hover-bg", trackBg);
+    root.style.setProperty("--dynamic-listRow-after-hover-bg", listRowAfterBg);
+  } catch (error) {
+    console.error("Error setting hover background colors:", error);
+    // Fallback to light defaults if calculation/setting fails
+    root.style.setProperty("--dynamic-card-hover-bg", DEFAULT_DYNAMIC_CARD_BG);
+    root.style.setProperty(
+      "--dynamic-track-hover-bg",
+      DEFAULT_DYNAMIC_TRACK_BG
+    );
+    root.style.setProperty(
+      "--dynamic-listRow-after-hover-bg",
+      DEFAULT_DYNAMIC_LISTROW_AFTER_BG
+    );
+  }
+}
+
+// Helper function to morph the gradient AND trigger hover background update
 function morphGradient(
   newMain: string,
   newSecondary: string,
@@ -417,49 +494,16 @@ function morphGradient(
     getComputedStyle(root).getPropertyValue("--gradient-secondary").trim() ||
     DEFAULT_SECONDARY_COLOR;
 
-  // Avoid unnecessary animations if colors haven't changed
+  // Avoid unnecessary gradient animations if colors haven't changed
+  // But DO update hover backgrounds even if gradient is the same (in case setting changed)
   if (newMain === currentMain && newSecondary === currentSecondary) {
-    // console.log("Skipping morph: Colors are the same.");
+    // Even if gradient colors match, ensure hover styles are up-to-date
+    updateHoverBackgrounds(newSecondary);
     return;
   }
 
-  //  Calculate and set dynamic card hover background ---
-  try {
-    // Card hover background: Darken the secondary color significantly
-    // Experiment with the darken value (e.g., 1, 1.5, 2). Let's start with 1.2
-    const cardHoverBgColor = chroma(newSecondary).darken(1.2).hex("rgba"); // Keep it opaque for now
-    root.style.setProperty("--dynamic-card-hover-bg", cardHoverBgColor);
-    // console.log(`Set --dynamic-card-hover-bg to ${cardHoverBgColor}`);
-
-    // Track row hover background: Darken slightly less than cards
-    // Experiment with the darken value (e.g., 0.5, 0.8, 1). Let's start with 0.8
-    const trackHoverBgColor = chroma(newSecondary).darken(0.8).hex("rgba"); // Keep it opaque
-    root.style.setProperty("--dynamic-track-hover-bg", trackHoverBgColor);
-    // console.log(`Set --dynamic-track-hover-bg to ${trackHoverBgColor}`);
-
-    // List row ::after hover background: Darken subtly
-    // Experiment with darken value (e.g., 0.4, 0.5, 0.6). Let's try 0.5
-    const listRowAfterHoverBgColor = chroma(newSecondary)
-      .darken(0.5)
-      .hex("rgba");
-    root.style.setProperty(
-      "--dynamic-listRow-after-hover-bg",
-      listRowAfterHoverBgColor
-    );
-    // console.log(`Set --dynamic-listRow-after-hover-bg to ${listRowAfterHoverBgColor}`);
-  } catch (error) {
-    console.error("Error setting dynamic card hover color:", error);
-    // Fallback to default if color parsing/setting fails
-    root.style.setProperty("--dynamic-card-hover-bg", DEFAULT_DYNAMIC_CARD_BG);
-    root.style.setProperty(
-      "--dynamic-track-hover-bg",
-      DEFAULT_DYNAMIC_TRACK_BG
-    );
-    root.style.setProperty(
-      "--dynamic-listRow-after-hover-bg",
-      DEFAULT_DYNAMIC_LISTROW_AFTER_BG
-    );
-  }
+  // --- Update Hover Backgrounds using the *new* secondary color ---
+  updateHoverBackgrounds(newSecondary); // <--- Call the helper function
 
   const duration = getAnimationDuration(isInitialApplication);
   console.log(`Morphing gradient to ${newSecondary} over ${duration}s`);
@@ -469,8 +513,6 @@ function morphGradient(
     "--gradient-secondary": newSecondary,
     duration: duration,
     ease: "power2.inOut",
-    // onStart: () => { console.log("Gradient morph started."); },
-    // onUpdate: () => { console.log("Gradient is morphing..."); },
     onComplete: () => {
       console.log("Gradient morph completed.");
     },
