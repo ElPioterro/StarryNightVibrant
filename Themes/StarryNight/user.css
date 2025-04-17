@@ -33,6 +33,36 @@
   color: var(--spice-sidebar);
 }
 
+/* Dynamically set card hover/context menu background */
+.main-card-card:hover,
+.main-card-card[data-context-menu-open="true"] {
+  /* Use the variable set by the extension, fallback to a default semi-transparent white */
+  background: var(--dynamic-card-hover-bg, rgba(255, 255, 255, 0.1));
+  /* Add a transition for smoother background changes on hover */
+  transition: background-color 0.2s ease-out;
+}
+
+/* Dynamically set track list row hover background */
+.main-trackList-trackListRow:hover {
+  /* Use the variable set by the extension, fallback to a default subtle semi-transparent white */
+  background-color: var(--dynamic-track-hover-bg, rgba(255, 255, 255, 0.08));
+  /* Add a transition for smoother background changes on hover */
+  transition: background-color 0.2s ease-out;
+}
+
+/* Dynamically set background for specific list row hover (via ::after pseudo-element) */
+/* NOTE: The main selector class is very specific and might break with Spotify updates! */
+.BoxComponent-group-naked-listRow-isInteractive-hasLeadingOrMedia-minBlockSize_56px-padding_8px:hover::after {
+  /* Use the variable set by the extension, fallback to a very subtle semi-transparent white */
+  background-color: var(
+    --dynamic-listRow-after-hover-bg,
+    rgba(255, 255, 255, 0.06)
+  );
+  /* Add a transition for smoother background changes */
+  /* Note: Transitioning pseudo-elements requires the base element to trigger */
+  transition: background-color 0.2s ease-out;
+}
+
 /* --- Transparency Overrides (Making UI elements see-through) --- */
 
 /* Remove default background from entity headers (playlists, albums, artists) */

@@ -1,6 +1,7 @@
 import { Vibrant } from "node-vibrant/browser";
 import gsap from "gsap";
 import { SettingsSection } from "spcr-settings";
+import chroma from "chroma-js";
 
 // --- Constants ---
 // Settings IDs
@@ -25,6 +26,9 @@ const DEFAULT_FIXED_DURATION = 1.5;
 const DEFAULT_REGULAR_DURATION = 1.5;
 const DEFAULT_FIRST_DURATION = 1.5;
 const DEFAULT_SECONDARY_COLOR = "#142b44"; // Fallback color
+const DEFAULT_DYNAMIC_CARD_BG = "rgba(255, 255, 255, 0.1)"; // Default fallback hover bg
+const DEFAULT_DYNAMIC_TRACK_BG = "rgba(255, 255, 255, 0.08)"; // Default fallback track hover bg
+const DEFAULT_DYNAMIC_LISTROW_AFTER_BG = "rgba(255, 255, 255, 0.06)"; // Default fallback for list row ::after hover
 
 // --- Global State ---
 let currentSection = -1;
@@ -40,6 +44,21 @@ async function main() {
   ) {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
+
+  // --- Initialize CSS Variable ---
+  // Set the initial fallback value for the card hover background
+  document.documentElement.style.setProperty(
+    "--dynamic-card-hover-bg",
+    DEFAULT_DYNAMIC_CARD_BG
+  );
+  document.documentElement.style.setProperty(
+    "--dynamic-track-hover-bg",
+    DEFAULT_DYNAMIC_TRACK_BG
+  );
+  document.documentElement.style.setProperty(
+    "--dynamic-listRow-after-hover-bg",
+    DEFAULT_DYNAMIC_LISTROW_AFTER_BG
+  ); // <--- ADD THIS
 
   // Initialize Settings
   initializeSettings();
@@ -402,6 +421,44 @@ function morphGradient(
   if (newMain === currentMain && newSecondary === currentSecondary) {
     // console.log("Skipping morph: Colors are the same.");
     return;
+  }
+
+  //  Calculate and set dynamic card hover background ---
+  try {
+    // Card hover background: Darken the secondary color significantly
+    // Experiment with the darken value (e.g., 1, 1.5, 2). Let's start with 1.2
+    const cardHoverBgColor = chroma(newSecondary).darken(1.2).hex("rgba"); // Keep it opaque for now
+    root.style.setProperty("--dynamic-card-hover-bg", cardHoverBgColor);
+    // console.log(`Set --dynamic-card-hover-bg to ${cardHoverBgColor}`);
+
+    // Track row hover background: Darken slightly less than cards
+    // Experiment with the darken value (e.g., 0.5, 0.8, 1). Let's start with 0.8
+    const trackHoverBgColor = chroma(newSecondary).darken(0.8).hex("rgba"); // Keep it opaque
+    root.style.setProperty("--dynamic-track-hover-bg", trackHoverBgColor);
+    // console.log(`Set --dynamic-track-hover-bg to ${trackHoverBgColor}`);
+
+    // List row ::after hover background: Darken subtly
+    // Experiment with darken value (e.g., 0.4, 0.5, 0.6). Let's try 0.5
+    const listRowAfterHoverBgColor = chroma(newSecondary)
+      .darken(0.5)
+      .hex("rgba");
+    root.style.setProperty(
+      "--dynamic-listRow-after-hover-bg",
+      listRowAfterHoverBgColor
+    );
+    // console.log(`Set --dynamic-listRow-after-hover-bg to ${listRowAfterHoverBgColor}`);
+  } catch (error) {
+    console.error("Error setting dynamic card hover color:", error);
+    // Fallback to default if color parsing/setting fails
+    root.style.setProperty("--dynamic-card-hover-bg", DEFAULT_DYNAMIC_CARD_BG);
+    root.style.setProperty(
+      "--dynamic-track-hover-bg",
+      DEFAULT_DYNAMIC_TRACK_BG
+    );
+    root.style.setProperty(
+      "--dynamic-listRow-after-hover-bg",
+      DEFAULT_DYNAMIC_LISTROW_AFTER_BG
+    );
   }
 
   const duration = getAnimationDuration(isInitialApplication);
