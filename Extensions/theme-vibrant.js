@@ -3,6 +3,42 @@
           await new Promise(resolve => setTimeout(resolve, 10));
         }
         var themeDvibrant = (() => {
+  var __create = Object.create;
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __getProtoOf = Object.getPrototypeOf;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __commonJS = (cb, mod) => function __require() {
+    return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+    isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+    mod
+  ));
+
+  // external-global-plugin:react
+  var require_react = __commonJS({
+    "external-global-plugin:react"(exports, module) {
+      module.exports = Spicetify.React;
+    }
+  });
+
+  // external-global-plugin:react-dom
+  var require_react_dom = __commonJS({
+    "external-global-plugin:react-dom"(exports, module) {
+      module.exports = Spicetify.ReactDOM;
+    }
+  });
+
   // node_modules/@vibrant/image/dist/esm/histogram.js
   var Histogram = class {
     constructor(pixels, opts) {
@@ -5346,119 +5382,574 @@
   var gsapWithCSS = gsap.registerPlugin(CSSPlugin) || gsap;
   var TweenMaxWithCSS = gsapWithCSS.core.Tween;
 
+  // node_modules/spcr-settings/settingsSection.tsx
+  var import_react = __toESM(require_react());
+  var import_react_dom = __toESM(require_react_dom());
+  var SettingsSection = class {
+    constructor(name, settingsId, initialSettingsFields = {}) {
+      this.name = name;
+      this.settingsId = settingsId;
+      this.initialSettingsFields = initialSettingsFields;
+      this.settingsFields = this.initialSettingsFields;
+      this.setRerender = null;
+      this.pushSettings = async () => {
+        Object.entries(this.settingsFields).forEach(([nameId, field]) => {
+          if (field.type !== "button" && this.getFieldValue(nameId) === void 0) {
+            this.setFieldValue(nameId, field.defaultValue);
+          }
+        });
+        while (!Spicetify?.Platform?.History?.listen) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+        if (this.stopHistoryListener)
+          this.stopHistoryListener();
+        this.stopHistoryListener = Spicetify.Platform.History.listen((e) => {
+          if (e.pathname === "/preferences") {
+            this.render();
+          }
+        });
+        if (Spicetify.Platform.History.location.pathname === "/preferences") {
+          await this.render();
+        }
+      };
+      this.rerender = () => {
+        if (this.setRerender) {
+          this.setRerender(Math.random());
+        }
+      };
+      this.render = async () => {
+        while (!document.getElementById("desktop.settings.selectLanguage")) {
+          if (Spicetify.Platform.History.location.pathname !== "/preferences")
+            return;
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+        const allSettingsContainer = document.querySelector(
+          ".main-view-container__scroll-node-child main div"
+        );
+        if (!allSettingsContainer)
+          return console.error("[spcr-settings] settings container not found");
+        let pluginSettingsContainer = Array.from(
+          allSettingsContainer.children
+        ).find((child) => child.id === this.settingsId);
+        if (!pluginSettingsContainer) {
+          pluginSettingsContainer = document.createElement("div");
+          pluginSettingsContainer.id = this.settingsId;
+          allSettingsContainer.appendChild(pluginSettingsContainer);
+        } else {
+          console.log(pluginSettingsContainer);
+        }
+        import_react_dom.default.render(/* @__PURE__ */ import_react.default.createElement(this.FieldsContainer, null), pluginSettingsContainer);
+      };
+      this.addButton = (nameId, description, value, onClick, events) => {
+        this.settingsFields[nameId] = {
+          type: "button",
+          description,
+          value,
+          events: {
+            onClick,
+            ...events
+          }
+        };
+      };
+      this.addInput = (nameId, description, defaultValue, onChange, inputType, events) => {
+        this.settingsFields[nameId] = {
+          type: "input",
+          description,
+          defaultValue,
+          inputType,
+          events: {
+            onChange,
+            ...events
+          }
+        };
+      };
+      this.addHidden = (nameId, defaultValue) => {
+        this.settingsFields[nameId] = {
+          type: "hidden",
+          defaultValue
+        };
+      };
+      this.addToggle = (nameId, description, defaultValue, onChange, events) => {
+        this.settingsFields[nameId] = {
+          type: "toggle",
+          description,
+          defaultValue,
+          events: {
+            onChange,
+            ...events
+          }
+        };
+      };
+      this.addDropDown = (nameId, description, options, defaultIndex, onSelect, events) => {
+        this.settingsFields[nameId] = {
+          type: "dropdown",
+          description,
+          defaultValue: options[defaultIndex],
+          options,
+          events: {
+            onSelect,
+            ...events
+          }
+        };
+      };
+      this.getFieldValue = (nameId) => {
+        return JSON.parse(
+          Spicetify.LocalStorage.get(`${this.settingsId}.${nameId}`) || "{}"
+        )?.value;
+      };
+      this.setFieldValue = (nameId, newValue) => {
+        Spicetify.LocalStorage.set(
+          `${this.settingsId}.${nameId}`,
+          JSON.stringify({ value: newValue })
+        );
+      };
+      this.FieldsContainer = () => {
+        const [rerender, setRerender] = (0, import_react.useState)(0);
+        this.setRerender = setRerender;
+        return /* @__PURE__ */ import_react.default.createElement("div", {
+          className: "x-settings-section",
+          key: rerender
+        }, /* @__PURE__ */ import_react.default.createElement("h2", {
+          className: "TypeElement-cello-textBase-type"
+        }, this.name), Object.entries(this.settingsFields).map(([nameId, field]) => {
+          return /* @__PURE__ */ import_react.default.createElement(this.Field, {
+            nameId,
+            field
+          });
+        }));
+      };
+      this.Field = (props) => {
+        const id = `${this.settingsId}.${props.nameId}`;
+        let defaultStateValue;
+        if (props.field.type === "button") {
+          defaultStateValue = props.field.value;
+        } else {
+          defaultStateValue = this.getFieldValue(props.nameId);
+        }
+        if (props.field.type === "hidden") {
+          return /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null);
+        }
+        const [value, setValueState] = (0, import_react.useState)(defaultStateValue);
+        const setValue = (newValue) => {
+          if (newValue !== void 0) {
+            setValueState(newValue);
+            this.setFieldValue(props.nameId, newValue);
+          }
+        };
+        return /* @__PURE__ */ import_react.default.createElement("div", {
+          className: "x-settings-row"
+        }, /* @__PURE__ */ import_react.default.createElement("div", {
+          className: "x-settings-firstColumn"
+        }, /* @__PURE__ */ import_react.default.createElement("label", {
+          className: "TypeElement-viola-textSubdued-type",
+          htmlFor: id
+        }, props.field.description || "")), /* @__PURE__ */ import_react.default.createElement("div", {
+          className: "x-settings-secondColumn"
+        }, props.field.type === "input" ? /* @__PURE__ */ import_react.default.createElement("input", {
+          className: "x-settings-input",
+          id,
+          dir: "ltr",
+          value,
+          type: props.field.inputType || "text",
+          ...props.field.events,
+          onChange: (e) => {
+            setValue(e.currentTarget.value);
+            const onChange = props.field.events?.onChange;
+            if (onChange)
+              onChange(e);
+          }
+        }) : props.field.type === "button" ? /* @__PURE__ */ import_react.default.createElement("span", null, /* @__PURE__ */ import_react.default.createElement("button", {
+          id,
+          className: "Button-sc-y0gtbx-0 Button-small-buttonSecondary-useBrowserDefaultFocusStyle x-settings-button",
+          ...props.field.events,
+          onClick: (e) => {
+            setValue();
+            const onClick = props.field.events?.onClick;
+            if (onClick)
+              onClick(e);
+          },
+          type: "button"
+        }, value)) : props.field.type === "toggle" ? /* @__PURE__ */ import_react.default.createElement("label", {
+          className: "x-settings-secondColumn x-toggle-wrapper"
+        }, /* @__PURE__ */ import_react.default.createElement("input", {
+          id,
+          className: "x-toggle-input",
+          type: "checkbox",
+          checked: value,
+          ...props.field.events,
+          onClick: (e) => {
+            setValue(e.currentTarget.checked);
+            const onClick = props.field.events?.onClick;
+            if (onClick)
+              onClick(e);
+          }
+        }), /* @__PURE__ */ import_react.default.createElement("span", {
+          className: "x-toggle-indicatorWrapper"
+        }, /* @__PURE__ */ import_react.default.createElement("span", {
+          className: "x-toggle-indicator"
+        }))) : props.field.type === "dropdown" ? /* @__PURE__ */ import_react.default.createElement("select", {
+          className: "main-dropDown-dropDown",
+          id,
+          ...props.field.events,
+          onChange: (e) => {
+            setValue(
+              props.field.options[e.currentTarget.selectedIndex]
+            );
+            const onChange = props.field.events?.onChange;
+            if (onChange)
+              onChange(e);
+          }
+        }, props.field.options.map((option, i) => {
+          return /* @__PURE__ */ import_react.default.createElement("option", {
+            selected: option === value,
+            value: i + 1
+          }, option);
+        })) : /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null)));
+      };
+    }
+  };
+
   // src/app.tsx
+  var SETTINGS_SECTION_ID = "gradient-theme-settings";
+  var MODE_SETTING_ID = "gradient-mode";
+  var SECTIONS_SETTING_ID = "gradient-sections";
+  var ANIMATION_TYPE_SETTING_ID = "gradient-anim-type";
+  var FIXED_DURATION_SETTING_ID = "gradient-anim-fixed-duration";
+  var REGULAR_DURATION_SETTING_ID = "gradient-anim-regular-duration";
+  var FIRST_DURATION_SETTING_ID = "gradient-anim-first-duration";
+  var FIRST_TIME_STORAGE_KEY = "gradientThemeFirstTime";
+  var NOW_PLAYING_BAR_SELECTOR = ".main-nowPlayingWidget-trackInfo";
+  var COVER_ART_SELECTOR = ".main-nowPlayingWidget-coverArt img";
+  var DEFAULT_MODE = "Progress-Based";
+  var DEFAULT_SECTIONS = 6;
+  var DEFAULT_ANIMATION_TYPE = "Fixed";
+  var DEFAULT_FIXED_DURATION = 1.5;
+  var DEFAULT_REGULAR_DURATION = 1.5;
+  var DEFAULT_FIRST_DURATION = 1.5;
+  var DEFAULT_SECONDARY_COLOR = "#142b44";
+  var currentSection = -1;
+  var settings;
+  var progressIntervalId = null;
   async function main() {
-    while (!(Spicetify == null ? void 0 : Spicetify.showNotification)) {
+    while (!(Spicetify == null ? void 0 : Spicetify.Platform) || !(Spicetify == null ? void 0 : Spicetify.showNotification) || !(Spicetify == null ? void 0 : Spicetify.Player)) {
       await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    initializeSettings();
+    localStorage.removeItem(FIRST_TIME_STORAGE_KEY);
+    try {
+      const user = await Spicetify.Platform.UserAPI.getUser();
+      Spicetify.showNotification(
+        `Gradient Theme Initialized for ${user.displayName}`
+      );
+    } catch (e) {
+      console.warn("Couldn't fetch user info for notification", e);
+      Spicetify.showNotification(`Gradient Theme Initialized`);
     }
     initializeThemeExtension();
   }
-  function applyGradientFromCoverArt() {
-    const coverArt = document.querySelector(
-      ".main-nowPlayingWidget-coverArt img"
+  function initializeSettings() {
+    settings = new SettingsSection(
+      "Gradient Theme Settings",
+      SETTINGS_SECTION_ID
     );
+    settings.addDropDown(
+      MODE_SETTING_ID,
+      "Gradient Update Mode",
+      ["Static", "Random Static", "Progress-Based"],
+      ["Static", "Random Static", "Progress-Based"].indexOf(DEFAULT_MODE),
+      () => {
+        const newValue = settings.getFieldValue(MODE_SETTING_ID);
+        console.log("Mode changed to:", newValue);
+        resetThemeLogic();
+      }
+    );
+    settings.addInput(
+      SECTIONS_SETTING_ID,
+      "Number of Sections (for Progress-Based mode)",
+      DEFAULT_SECTIONS.toString(),
+      () => {
+        const newValue = settings.getFieldValue(SECTIONS_SETTING_ID);
+        console.log("Sections changed to:", newValue);
+        const currentMode = settings.getFieldValue(MODE_SETTING_ID);
+        if (currentMode === "Progress-Based") {
+          currentSection = -1;
+        }
+      }
+    );
+    settings.addDropDown(
+      ANIMATION_TYPE_SETTING_ID,
+      "Animation Duration Type",
+      ["Fixed", "Dynamic", "Dynamic Adjusted"],
+      ["Fixed", "Dynamic", "Dynamic Adjusted"].indexOf(DEFAULT_ANIMATION_TYPE),
+      () => {
+        const newValue = settings.getFieldValue(
+          ANIMATION_TYPE_SETTING_ID
+        );
+        console.log("Animation type changed:", newValue);
+      }
+    );
+    settings.addInput(
+      FIXED_DURATION_SETTING_ID,
+      "Fixed Animation Duration (seconds)",
+      DEFAULT_FIXED_DURATION.toString()
+    );
+    settings.addInput(
+      REGULAR_DURATION_SETTING_ID,
+      "Regular Animation Duration (seconds, for Dynamic modes)",
+      DEFAULT_REGULAR_DURATION.toString()
+    );
+    settings.addInput(
+      FIRST_DURATION_SETTING_ID,
+      "First Animation Duration (seconds, for Dynamic modes)",
+      DEFAULT_FIRST_DURATION.toString()
+    );
+    settings.pushSettings();
+  }
+  function initializeThemeExtension() {
+    console.log("Initializing theme extension...");
+    const nowPlayingBar = document.querySelector(
+      NOW_PLAYING_BAR_SELECTOR
+    );
+    if (!nowPlayingBar) {
+      console.error("Now-playing bar not found. Cannot initialize theme.");
+      return;
+    }
+    console.log("Now-playing bar found:", nowPlayingBar);
+    const observer = new MutationObserver((mutations) => {
+      console.log("Now-playing bar content changed (Mutation Observer)");
+      if (settings.getFieldValue(MODE_SETTING_ID) === "Progress-Based") {
+        currentSection = -1;
+      }
+      applyGradientFromCoverArt(true);
+    });
+    observer.observe(nowPlayingBar, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+    setupProgressTracking();
+    applyGradientFromCoverArt(true);
+  }
+  function setupProgressTracking() {
+    if (progressIntervalId !== null) {
+      clearInterval(progressIntervalId);
+      progressIntervalId = null;
+      console.log("Cleared existing progress interval.");
+    }
+    const currentMode = settings.getFieldValue(MODE_SETTING_ID);
+    if (currentMode === "Progress-Based") {
+      console.log("Starting progress tracking interval.");
+      progressIntervalId = window.setInterval(updateGradientOnProgress, 1e3);
+    } else {
+      console.log("Mode is not Progress-Based, progress tracking stopped.");
+    }
+  }
+  function resetThemeLogic() {
+    console.log("Resetting theme logic due to settings change...");
+    setupProgressTracking();
+    applyGradientFromCoverArt(true);
+  }
+  function applyGradientFromCoverArt(isInitialApplication = false) {
+    const coverArt = document.querySelector(COVER_ART_SELECTOR);
+    const currentMode = settings.getFieldValue(MODE_SETTING_ID);
+    if (!isInitialApplication && (currentMode === "Static" || currentMode === "Random Static")) {
+      return;
+    }
     if (coverArt && coverArt.src) {
       const proxyUrl = getProxyImageUrl(coverArt.src);
       Vibrant.from(proxyUrl).getPalette().then((palette) => {
-        var _a;
+        var _a, _b, _c;
         if (!palette) {
           console.error("Palette extraction failed");
           return;
         }
-        const paletteKeys = Object.keys(palette);
-        const paletteKey = paletteKeys[0];
-        const mainColor = "#000000";
-        const secondaryColor = ((_a = palette[paletteKey]) == null ? void 0 : _a.hex) || "#142b44";
-        console.log("Extracted colors:", mainColor, secondaryColor);
-        morphGradient(mainColor, secondaryColor);
-      }).catch((error) => console.error("Error extracting colors:", error));
+        const paletteKeys = Object.keys(palette).filter((key) => palette[key]);
+        if (paletteKeys.length === 0) {
+          console.error("No valid palette keys found.");
+          morphGradient(
+            "#000000",
+            DEFAULT_SECONDARY_COLOR,
+            isInitialApplication
+          );
+          return;
+        }
+        let mainColor = "#000000";
+        let secondaryColor = DEFAULT_SECONDARY_COLOR;
+        let logReason = "";
+        switch (currentMode) {
+          case "Static":
+            secondaryColor = ((_a = palette[paletteKeys[0]]) == null ? void 0 : _a.hex) || DEFAULT_SECONDARY_COLOR;
+            logReason = "Static mode - First Key";
+            break;
+          case "Random Static":
+            const randomKey = paletteKeys[Math.floor(Math.random() * paletteKeys.length)];
+            secondaryColor = ((_b = palette[randomKey]) == null ? void 0 : _b.hex) || DEFAULT_SECONDARY_COLOR;
+            logReason = `Random Static mode - Key: ${randomKey}`;
+            break;
+          case "Progress-Based":
+            const numSections = parseInt(
+              settings.getFieldValue(SECTIONS_SETTING_ID),
+              10
+            ) || DEFAULT_SECTIONS;
+            const sectionIndex = 0;
+            const paletteKeyProgress = paletteKeys[sectionIndex % paletteKeys.length];
+            secondaryColor = ((_c = palette[paletteKeyProgress]) == null ? void 0 : _c.hex) || DEFAULT_SECONDARY_COLOR;
+            logReason = `Progress-Based mode - Initial Apply (Section 0) - Key: ${paletteKeyProgress}`;
+            break;
+        }
+        console.log(
+          `${logReason} -> Extracted colors:`,
+          mainColor,
+          secondaryColor
+        );
+        morphGradient(mainColor, secondaryColor, isInitialApplication);
+      }).catch((error) => {
+        console.error("Error extracting colors:", error);
+        morphGradient("#000000", DEFAULT_SECONDARY_COLOR, isInitialApplication);
+      });
     } else {
-      console.warn("Cover art not found or source is missing.");
+      console.warn(
+        "Cover art not found or source is missing. Cannot apply gradient."
+      );
     }
   }
   function updateGradientOnProgress() {
+    const currentMode = settings.getFieldValue(MODE_SETTING_ID);
+    if (currentMode !== "Progress-Based") {
+      return;
+    }
     const progress = Spicetify.Player.getProgress();
     const duration = Spicetify.Player.getDuration();
-    if (progress && duration && duration > 0) {
+    if (progress != null && duration != null && duration > 0) {
       const progressFraction = progress / duration;
-      const section = Math.floor(progressFraction * 2);
+      const numSections = parseInt(settings.getFieldValue(SECTIONS_SETTING_ID), 10) || DEFAULT_SECTIONS;
+      const section = Math.min(
+        Math.floor(progressFraction * numSections),
+        numSections - 1
+      );
       if (section !== currentSection) {
+        console.warn(`CHANGE SECTION: ${currentSection} -> ${section}`);
         currentSection = section;
-        console.warn("CHANGE SECTION!!!!");
         updatePaletteForSection(section);
       }
     }
   }
-  var currentSection = -1;
   function updatePaletteForSection(section) {
-    const coverArt = document.querySelector(
-      ".main-nowPlayingWidget-coverArt img"
-    );
+    const coverArt = document.querySelector(COVER_ART_SELECTOR);
     if (coverArt && coverArt.src) {
       const proxyUrl = getProxyImageUrl(coverArt.src);
       Vibrant.from(proxyUrl).getPalette().then((palette) => {
         var _a;
         if (!palette) {
-          console.error("Palette extraction failed");
+          console.error(`Section ${section + 1}: Palette extraction failed`);
           return;
         }
-        const paletteKeys = Object.keys(palette);
-        const paletteKey = paletteKeys[section % 2];
+        const paletteKeys = Object.keys(palette).filter((key) => palette[key]);
+        if (paletteKeys.length === 0) {
+          console.error(`Section ${section + 1}: No valid palette keys found.`);
+          return;
+        }
+        const numSections = parseInt(settings.getFieldValue(SECTIONS_SETTING_ID), 10) || DEFAULT_SECTIONS;
+        const paletteKey = paletteKeys[section % paletteKeys.length];
         const mainColor = "#000000";
-        const secondaryColor = ((_a = palette[paletteKey]) == null ? void 0 : _a.hex) || "#142b44";
+        const secondaryColor = ((_a = palette[paletteKey]) == null ? void 0 : _a.hex) || DEFAULT_SECONDARY_COLOR;
         console.log(
-          `Section ${section + 1}: Extracted colors`,
+          `Section ${section + 1}/${numSections}: Extracted colors (Key: ${paletteKey})`,
           mainColor,
           secondaryColor
         );
-        morphGradient(mainColor, secondaryColor);
-      }).catch((error) => console.error("Error extracting colors:", error));
+        morphGradient(mainColor, secondaryColor, false);
+      }).catch(
+        (error) => console.error(`Section ${section + 1}: Error extracting colors:`, error)
+      );
     } else {
-      console.warn("Cover art not found or source is missing.");
+      console.warn(
+        `Section ${section + 1}: Cover art not found or source is missing.`
+      );
     }
   }
-  function morphGradient(newMain, newSecondary) {
+  function morphGradient(newMain, newSecondary, isInitialApplication) {
     const root = document.documentElement;
     const currentMain = getComputedStyle(root).getPropertyValue("--gradient-main").trim() || "#000000";
-    const currentSecondary = getComputedStyle(root).getPropertyValue("--gradient-secondary").trim() || "#142b44";
-    if (newMain == currentMain && newSecondary == currentSecondary)
+    const currentSecondary = getComputedStyle(root).getPropertyValue("--gradient-secondary").trim() || DEFAULT_SECONDARY_COLOR;
+    if (newMain === currentMain && newSecondary === currentSecondary) {
       return;
+    }
+    const duration = getAnimationDuration(isInitialApplication);
+    console.log(`Morphing gradient to ${newSecondary} over ${duration}s`);
     gsapWithCSS.to(root, {
       "--gradient-main": newMain,
       "--gradient-secondary": newSecondary,
-      duration: 1.5,
+      duration,
       ease: "power2.inOut",
-      onUpdate: () => {
-        console.log("Gradient is morphing...");
-      },
       onComplete: () => {
         console.log("Gradient morph completed.");
       }
     });
   }
-  function getProxyImageUrl(spotifyUri) {
-    return spotifyUri.replace("spotify:image:", "https://i.scdn.co/image/");
-  }
-  function initializeThemeExtension() {
-    const nowPlayingBar = document.querySelector(
-      ".main-nowPlayingWidget-trackInfo"
-    );
-    if (!nowPlayingBar) {
-      console.error("Now-playing bar not found.");
-      return;
+  function getAnimationDuration(isInitialApplication) {
+    const animType = settings.getFieldValue(ANIMATION_TYPE_SETTING_ID);
+    const fixedDuration = parseFloat(settings.getFieldValue(FIXED_DURATION_SETTING_ID)) || DEFAULT_FIXED_DURATION;
+    const regularDuration = parseFloat(settings.getFieldValue(REGULAR_DURATION_SETTING_ID)) || DEFAULT_REGULAR_DURATION;
+    const firstDuration = parseFloat(settings.getFieldValue(FIRST_DURATION_SETTING_ID)) || DEFAULT_FIRST_DURATION;
+    switch (animType) {
+      case "Fixed":
+        return fixedDuration;
+      case "Dynamic":
+      case "Dynamic Adjusted":
+        const isFirstTime = localStorage.getItem(FIRST_TIME_STORAGE_KEY) === null;
+        let duration;
+        if (isFirstTime && isInitialApplication) {
+          localStorage.setItem(FIRST_TIME_STORAGE_KEY, "false");
+          duration = firstDuration;
+          console.log("Using FIRST animation duration:", duration);
+        } else {
+          duration = regularDuration;
+          console.log("Using REGULAR animation duration:", duration);
+        }
+        if (animType === "Dynamic Adjusted") {
+          const currentMode = settings.getFieldValue(MODE_SETTING_ID);
+          if (currentMode === "Progress-Based") {
+            const songDurationMs = Spicetify.Player.getDuration();
+            const numSections = parseInt(
+              settings.getFieldValue(SECTIONS_SETTING_ID),
+              10
+            ) || DEFAULT_SECTIONS;
+            if (songDurationMs && numSections > 0) {
+              const sectionDurationSec = songDurationMs / 1e3 / numSections;
+              if (sectionDurationSec > 0) {
+                const adjustedDuration = Math.min(
+                  duration,
+                  sectionDurationSec * 0.9
+                );
+                console.log(
+                  `Dynamic Adjusted: Regular=${duration}, Section=${sectionDurationSec.toFixed(
+                    2
+                  )}, Adjusted=${adjustedDuration.toFixed(2)}`
+                );
+                return adjustedDuration;
+              }
+            }
+          }
+        }
+        return duration;
+      default:
+        return DEFAULT_FIXED_DURATION;
     }
-    console.log("Now-playing bar found:", nowPlayingBar);
-    const observer = new MutationObserver(() => {
-      console.log("Now-playing bar content changed");
-      applyGradientFromCoverArt();
-    });
-    observer.observe(nowPlayingBar, { childList: true, subtree: true });
-    setInterval(updateGradientOnProgress, 1e3);
-    applyGradientFromCoverArt();
+  }
+  function getProxyImageUrl(spotifyUri) {
+    if (spotifyUri.startsWith("spotify:image:")) {
+      return spotifyUri.replace("spotify:image:", "https://i.scdn.co/image/");
+    }
+    if (spotifyUri.startsWith("https://i.scdn.co/image/")) {
+      return spotifyUri;
+    }
+    console.warn("Unexpected image URI format:", spotifyUri);
+    return spotifyUri;
   }
   var app_default = main;
 
-  // ../../../../Local/Temp/spicetify-creator/index.jsx
+  // ../../../../AppData/Local/Temp/spicetify-creator/index.jsx
   (async () => {
     await app_default();
   })();
