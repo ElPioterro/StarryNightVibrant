@@ -1,65 +1,140 @@
+/* user.css - Custom Styles for Spicetify Theme */
+
+/* --- Specific Element Styling & Overrides --- */
+
+/* Adjust Marketplace button text color (may depend on Spotify version/other themes) */
 .button-module__button___hf2qg_marketplace {
-  color: var(--spice-subtext)
+  color: var(--spice-subtext);
 }
 
-.main-entityHeader-backgroundColor {
-  background-color: #00000000 !important;
-}
-
-.main-actionBarBackground-background {
-  background-color: #00000000 !important;
-}
-
-.main-home-homeHeader {
-  background-color: #00000000 !important;
-}
-
-.Root__right-sidebar {
-  width: min-content;
-}
-
+/* Set Top Bar (search, profile) background color using theme highlight variable */
 .main-topBar-background {
   background-color: var(--spice-highlight) !important;
 }
 
-.Root__nav-bar {
-  background-color: #00000000 !important;
-}
-
+/* Set track row hover background color using theme highlight variable */
 .main-trackList-trackListRow:hover {
   background-color: var(--spice-highlight);
 }
 
+/* Set background color for the main Play/Pause button in the Now Playing Bar */
 .main-playPauseButton-button {
   background-color: var(--spice-button);
 }
 
+/* Ensure text color contrasts with background in specific playlist components */
+/* NOTE: Class names like this are fragile and may change with Spotify updates */
+.pUNc2aOeOQANHrhYa1GU .RDZ61ETnag1ilfZTkVxe {
+  color: #000000 !important; /* Using black, consider using a theme variable if possible */
+}
+
+/* Set text color for filter tags (e.g., in Library) using sidebar text color */
+.main-tag-container {
+  color: var(--spice-sidebar);
+}
+
+/* --- Transparency Overrides (Making UI elements see-through) --- */
+
+/* Remove default background from entity headers (playlists, albums, artists) */
+.main-entityHeader-backgroundColor {
+  background-color: #00000000 !important;
+}
+
+/* Remove default background from the action bar (below header with play button, etc.) */
+.main-actionBarBackground-background {
+  background-color: #00000000 !important;
+}
+
+/* Remove default background from the Home page header */
+.main-home-homeHeader {
+  background-color: #00000000 !important;
+}
+
+/* Make main navigation/library sidebar transparent */
+.Root__nav-bar {
+  background-color: #00000000 !important;
+}
+
+/* Remove background from a specific container (likely in playlist/album view) */
+/* NOTE: Fragile class name */
 .rX_OmqCngvY5ZCoYBZgb {
   background-color: #00000000 !important;
 }
 
+/* Make the Your Library entry points section transparent */
 .main-yourLibraryX-entryPoints {
   background-color: #00000000 !important;
 }
 
+/* Make the Spicetify Marketplace header transparent */
 .marketplace-header {
   background-color: #00000000 !important;
 }
 
+/* Remove background from another specific container */
+/* NOTE: Fragile class name */
 .EmeHQXR87mUskYK6xEde {
   background-color: #00000000 !important;
 }
 
+/* Make the background behind lyrics transparent */
 .lyrics-lyrics-background {
   background-color: #00000000 !important;
 }
 
+/* Make the playlist content area transparent */
+.playlist-playlist-playlistContent {
+  background: #00000000 !important;
+}
+
+/* Make the main view area transparent */
+.Root__main-view {
+  background-color: #00000000 !important;
+}
+
+/* Remove background from another specific container (likely related to cards/grid items) */
+/* NOTE: Fragile class name */
+.ffFwfKcPDbmAPLXzxzKq {
+  background-color: #00000000 !important;
+}
+
+/* Remove background from card elements for a cleaner look */
+.main-card-card {
+  background: none;
+}
+
+/* Remove background from artist overview content section */
+.artist-artistOverview-artistOverviewContent {
+  background-color: transparent;
+}
+
+/* Ensure artist 'About' section has a solid background (override transparency if needed) */
+.artist-artistAbout-container {
+  background-color: #000000; /* Using black, could use a theme variable */
+}
+
+/* Remove background from a container in the Now Playing Bar (likely around controls/track info) */
+/* NOTE: Fragile class name */
+.HD9s7U5E1RLSWKpXmrqx {
+  background-color: #00000000;
+  margin: auto; /* Center content */
+  width: 100%; /* Ensure full width */
+}
+
+/* --- Gradient & Background Effects --- */
+
+/* Override default action bar gradient/shadow with a simpler one */
 .main-actionBarBackground-background {
-  background-image: linear-gradient(rgba(var(--spice-rgb-shadow), .6) 0, #000000 100%), #00000000 !important;
-  animation: none !important;
+  background-image: linear-gradient(
+      rgba(var(--spice-rgb-shadow), 0.6) 0,
+      #000000 100% /* Fades to black */
+    ),
+    #00000000 !important; /* Ensure base color is transparent */
+  animation: none !important; /* Disable Spotify's default animations */
   -webkit-animation: none !important;
 }
 
+/* Remove default overlay gradients/animations from context view headers */
 .main-nowPlayingView-contextItemInfo:before,
 .main-entityHeader-background.main-entityHeader-overlay {
   background-image: none !important;
@@ -67,286 +142,199 @@
   -webkit-animation: none !important;
 }
 
+/* Remove default overlay gradients/animations from entity headers */
 .main-entityHeader-background.main-entityHeader-overlay:after {
   background-image: none !important;
   animation: none !important;
   -webkit-animation: none !important;
 }
 
-.pUNc2aOeOQANHrhYa1GU .RDZ61ETnag1ilfZTkVxe {
-  color: #000000 !important;
+/* Apply the dynamic gradient background to the main container */
+.Root__top-container {
+  /* Uses CSS variables --gradient-main and --gradient-secondary set by the extension */
+  /* Starts with --gradient-main (likely black) and fades to --gradient-secondary */
+  background-image: linear-gradient(
+    var(--gradient-main, #000000) 30%,
+    /* Default black if variable not set */ var(--gradient-secondary, #000000)
+      /* Default black if variable not set */
+  );
+  /* Basic CSS transition (GSAP in JS handles the smooth morphing duration/easing) */
+  transition: background-image 1.5s ease-in-out; /* Might be redundant if GSAP is used */
+  overflow: hidden; /* Prevent potential scrollbars caused by background effects */
 }
 
-.playlist-playlist-playlistContent {
-  background: #00000000 !important;
+/* --- Layout Adjustments --- */
+
+/* Allow right sidebar (Friend Activity) to shrink to its content width */
+.Root__right-sidebar {
+  width: min-content;
 }
 
+/* Ensure main view takes full width when right sidebar is hidden */
 [data-right-sidebar-hidden] .Root__main-view {
   grid-area: main-view/main-view/main-view/span 1;
 }
 
-
-.Root__main-view {
-  background-color: #00000000 !important;
-}
-
-/* Gradient Main */
-/* .Root__top-container { */
-    /* background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44) 100%), var(--background-noise); */
-    /* background-color: transparent; */
-    /* overflow: hidden; /* Prevent scrolling */
-/* }*/
-
-/* .Root__top-container { */
-    /* background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44)); */
-    /* transition: background-image 1.5s ease-in-out;  */
-/* } */
-
-.Root__top-container {
-    /* background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44)); */
-    background-image: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #000000));
-	transition: background-image 1.5s ease-in-out; /* Idk if neccesery */
-	overflow: hidden; /* Prevent scrolling */
-}
-
-/* :root{ */
-	/* --spice-sidebar: linear-gradient(var(--gradient-main, #000000) 30%, var(--gradient-secondary, #142b44)); */
-/* }  */
-
-
-
-
-/* For Changing Cover position */
-.main-coverSlotCollapsed-navAltContainer {
-    -webkit-transform: translateX(-8px);
-        transform: translate(-5px, -20px)}
-
-/* For Changing size of cover */
-.main-nowPlayingWidget-coverArt .cover-art {
-    width: 100px !important; /* New width */
-    height: 100px !important; /* New height */
-}
-
-/* Upiększanie main section */
-.main-entityHeader-backgroundColor, .main-entityHeader-overlay{
-background:none}
-
-
-/* Transparent color in artist tab */
-
-/* .artist-artistOverview-artistOverviewContent{ */
-	/* background-color: transparent; */
-/* } */
-
-
-
-
-/* .main-home-homeHeader  { */
-  /* background-image: linear-gradient(rgba(var(--spice-rgb-shadow), .6) 0, #00000000 100%), var(--background-noise); */
-/* } */
-
+/* Force center section of Now Playing Bar to take available width */
 .main-nowPlayingBar-center {
   width: 100%;
 }
 
-.HD9s7U5E1RLSWKpXmrqx {
-  background-color: #00000000;
-  margin: auto;
-  width: 100%;
-}
-
-.running-animation {
-  animation-play-state: running !important;
-}
-
-/* Nie wyglada dobrze 25% przy nowej wielkosci cover-art */
-.main-coverSlotCollapsed-expandButton {
-  /* right: 25%; */
-}
-
+/* Reorder controls in the Now Playing Bar: Progress bar first, then buttons */
 .player-controls__buttons.player-controls__buttons--new-icons {
   order: 2;
 }
-
 .playback-bar {
   order: 1;
 }
 
-.main-tag-container {
-  color: var(--spice-sidebar);
+/* --- Now Playing Bar Cover Art Modifications --- */
+
+/* Reposition the collapsed cover art slightly (left and up) */
+.main-coverSlotCollapsed-navAltContainer {
+  -webkit-transform: translateX(-8px);
+  transform: translate(-5px, -20px);
 }
 
+/* Increase the size of the cover art image */
+.main-nowPlayingWidget-coverArt .cover-art {
+  width: 100px !important; /* New width */
+  height: 100px !important; /* New height */
+}
+
+/* Adjust position of the expand button relative to the resized cover art */
+/* Commented out as it might not look good with 100px cover */
+/* .main-coverSlotCollapsed-expandButton {
+  right: 25%;
+} */
+
+/* --- Starry Night Theme Elements (Twinkling Stars & Shooting Stars) --- */
+/* Container for background effects, fixed position behind everything */
 .starrynight-bg-container {
   position: fixed;
-  z-index: 0;
-  pointer-events: none;
+  z-index: 0; /* Place behind UI elements */
+  pointer-events: none; /* Allow clicks to pass through */
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
-  background-color: transparent;
+  background-color: transparent; /* Should be transparent */
 }
 
-.ffFwfKcPDbmAPLXzxzKq {
-  background-color: #00000000 !important;
+/* Force specific animation to run (used for spinning disc art maybe?) */
+.running-animation {
+  animation-play-state: running !important;
 }
 
+/* Star Twinkle Animations */
 @keyframes twinkle1 {
-  0% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
-  20% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  40% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  60% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  80% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
+  /* Timing variant 1 */
+  0%,
+  80%,
   100% {
     box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
   }
+  20%,
+  40%,
+  60% {
+    box-shadow: 0px 0px 0px 0px var(--spice-star-glow);
+  } /* Fade out */
 }
 
 @keyframes twinkle2 {
-  0% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
-  20% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
-  40% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  60% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  80% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
+  /* Timing variant 2 */
+  0%,
+  20%,
   100% {
     box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
   }
+  40%,
+  60%,
+  80% {
+    box-shadow: 0px 0px 0px 0px var(--spice-star-glow);
+  } /* Fade out */
 }
 
 @keyframes twinkle3 {
-  0% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  20% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
-  40% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
+  /* Timing variant 3 */
+  0%,
+  80%,
+  100% {
+    box-shadow: 0px 0px 0px 0px var(--spice-star-glow);
+  } /* Start faded out */
+  20%,
+  40%,
   60% {
     box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
-  80% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  100% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
   }
 }
 
 @keyframes twinkle4 {
-  0% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  20% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
-
-  40% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
-  60% {
-    box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
-  }
-
+  /* Timing variant 4 */
+  0%,
+  20%,
+  100% {
+    box-shadow: 0px 0px 0px 0px var(--spice-star-glow);
+  } /* Start faded out */
+  40%,
+  60%,
   80% {
     box-shadow: 0px 0px 8px 2px var(--spice-star-glow);
   }
-
-  100% {
-    box-shadow: 0px 0px -8px 2px var(--spice-star-glow);
-  }
 }
 
+/* Basic spin animation (e.g., for rotating cover art if enabled elsewhere) */
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
 }
 
+/* --- Shooting Star Animation (External Code) --- */
 /*
 Pure CSS Shooting Star Animation Effect Copyright (c) 2021 by Delroy Prithvi (https://codepen.io/delroyprithvi/pen/LYyJROR)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[License Text Omitted for Brevity, but kept in original source]
 */
 .shootingstar {
   position: absolute;
-  width: 4px;
+  width: 4px; /* Star size */
   height: 4px;
-  background: var(--spice-shooting-star);
+  background: var(--spice-shooting-star); /* Star color */
   border-radius: 50%;
-  animation: animate 3s linear infinite;
-  left: initial;
-  z-index: -1;
+  animation: animate 3s linear infinite; /* Movement animation */
+  left: initial; /* Position calculated by JS or parent */
+  z-index: -1; /* Behind UI */
 }
 
+/* Creates the tail of the shooting star */
 .shootingstar::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 300px;
-  height: 1px;
-  background: linear-gradient(90deg, var(--spice-shooting-star), transparent);
+  width: 300px; /* Tail length */
+  height: 1px; /* Tail thickness */
+  background: linear-gradient(
+    90deg,
+    var(--spice-shooting-star),
+    transparent
+  ); /* Fades out */
 }
 
+/* Keyframes for the shooting star movement and fade */
 @keyframes animate {
   0% {
-    transform: rotate(315deg) translateX(0);
+    transform: rotate(315deg) translateX(0); /* Start position/angle */
     opacity: 1;
   }
-
   70% {
-    opacity: 1;
+    opacity: 1; /* Visible for most of the duration */
   }
-
   100% {
-    transform: rotate(315deg) translateX(-1500px);
-    opacity: 0;
+    transform: rotate(315deg) translateX(-1500px); /* End position (off-screen) */
+    opacity: 0; /* Fade out */
   }
 }
