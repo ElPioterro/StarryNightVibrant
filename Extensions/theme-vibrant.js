@@ -39,7 +39,7 @@
     }
   });
 
-  // node_modules/@vibrant/image/dist/esm/histogram.js
+  // ../../../../node_modules/@vibrant/image/dist/esm/histogram.js
   var Histogram = class {
     constructor(pixels, opts) {
       this.pixels = pixels;
@@ -110,7 +110,7 @@
     }
   };
 
-  // node_modules/@vibrant/image/dist/esm/index.js
+  // ../../../../node_modules/@vibrant/image/dist/esm/index.js
   var ImageBase = class {
     scaleDown(opts) {
       const width = this.getWidth();
@@ -154,7 +154,7 @@
     return imageData;
   }
 
-  // node_modules/@vibrant/image-browser/dist/esm/index.js
+  // ../../../../node_modules/@vibrant/image-browser/dist/esm/index.js
   function isRelativeUrl(url) {
     const u = new URL(url, location.href);
     return u.protocol === location.protocol && u.host === location.host && u.port === location.port;
@@ -277,7 +277,7 @@
     }
   };
 
-  // node_modules/@vibrant/core/dist/esm/utils.js
+  // ../../../../node_modules/@vibrant/core/dist/esm/utils.js
   function assignDeep(target, ...sources) {
     sources.forEach((s) => {
       if (!s)
@@ -300,7 +300,7 @@
     return target;
   }
 
-  // node_modules/@vibrant/core/dist/esm/options.js
+  // ../../../../node_modules/@vibrant/core/dist/esm/options.js
   function buildProcessOptions(opts, override) {
     const { colorCount, quantizer, generators, filters } = opts;
     const commonQuantizerOpts = { colorCount };
@@ -317,7 +317,7 @@
     );
   }
 
-  // node_modules/@vibrant/core/dist/esm/builder.js
+  // ../../../../node_modules/@vibrant/core/dist/esm/builder.js
   var Builder = class {
     constructor(src, opts = {}) {
       this._src = src;
@@ -379,7 +379,7 @@
     }
   };
 
-  // node_modules/@vibrant/core/dist/esm/pipeline/index.js
+  // ../../../../node_modules/@vibrant/core/dist/esm/pipeline/index.js
   var Stage = class {
     constructor(pipeline2) {
       this.pipeline = pipeline2;
@@ -471,7 +471,7 @@
     }
   };
 
-  // node_modules/@vibrant/color/dist/esm/converter.js
+  // ../../../../node_modules/@vibrant/color/dist/esm/converter.js
   function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1, 7);
   }
@@ -531,7 +531,7 @@
     return [r * 255, g * 255, b * 255];
   }
 
-  // node_modules/@vibrant/color/dist/esm/index.js
+  // ../../../../node_modules/@vibrant/color/dist/esm/index.js
   var Swatch = class {
     static applyFilters(colors, filters) {
       return filters.length > 0 ? colors.filter(({ r, g, b }) => {
@@ -606,7 +606,7 @@
     }
   };
 
-  // node_modules/@vibrant/core/dist/esm/index.js
+  // ../../../../node_modules/@vibrant/core/dist/esm/index.js
   var _Vibrant = class _Vibrant2 {
     constructor(_src, opts) {
       this._src = _src;
@@ -679,7 +679,7 @@
   // node_modules/node-vibrant/dist/esm/configs/browser.js
   Vibrant.DefaultOpts.ImageClass = BrowserImage;
 
-  // node_modules/@vibrant/quantizer-mmcq/dist/esm/vbox.js
+  // ../../../../node_modules/@vibrant/quantizer-mmcq/dist/esm/vbox.js
   var SIGBITS = 5;
   var RSHIFT = 8 - SIGBITS;
   var VBox = class {
@@ -881,7 +881,7 @@
     }
   };
 
-  // node_modules/@vibrant/quantizer-mmcq/dist/esm/pqueue.js
+  // ../../../../node_modules/@vibrant/quantizer-mmcq/dist/esm/pqueue.js
   var PQueue = class {
     _sort() {
       if (!this._sorted) {
@@ -916,7 +916,7 @@
     }
   };
 
-  // node_modules/@vibrant/quantizer-mmcq/dist/esm/index.js
+  // ../../../../node_modules/@vibrant/quantizer-mmcq/dist/esm/index.js
   var fractByPopulations = 0.75;
   function _splitBoxes(pq, target) {
     let lastSize = pq.size();
@@ -965,7 +965,7 @@
     return swatches;
   }
 
-  // node_modules/@vibrant/generator-default/dist/esm/index.js
+  // ../../../../node_modules/@vibrant/generator-default/dist/esm/index.js
   var DefaultOpts = {
     targetDarkLuma: 0.26,
     maxDarkLuma: 0.45,
