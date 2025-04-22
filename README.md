@@ -1,4 +1,4 @@
-# Spicetify Project - Dynamic Gradient Theme
+# Spicetify Project - StarryNightVibrant - Dynamic Gradient
 
 A custom Spicetify theme and extension that dynamically changes the background gradient based on the currently playing song's cover art. It offers several modes for how the gradient updates and animates.
 
