@@ -110,4 +110,4 @@ spicetify apply
   ```
 ## **License**
 
-[LICENSE.md](LICENSE)
+[LICENSE](LICENSE.md)
