@@ -2,7 +2,7 @@
   "name": "StarryNight Vibrant - Dynamic Gradient",
   "description": "Dynamic theme changing background gradient based on cover art. Automatically includes the required 'Dynamic Gradient' extension.",
   "preview": "Themes/StarryNight/starrynightvibrant_preview.png",
-  "readme": "README.md",
+  "readme": "README-Marketplace.md",
   "usercss": "Themes/StarryNight/user.css",
   "schemes": "Themes/StarryNight/color.ini",
   "include": [
