@@ -17,8 +17,6 @@
 
 ## **Screenshots**
 
-**(IMPORTANT: Replace placeholders below with actual paths to your screenshots!)**
-
 ### Dynamic Gradient in Action
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem">
