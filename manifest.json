@@ -1,0 +1,25 @@
+{
+  "name": "StarryNight Vibrant - Dynamic Gradient",
+  "description": "Dynamic theme changing background gradient based on cover art. Automatically includes the required 'Dynamic Gradient' extension.",
+  "preview": "Themes/StarryNight/starrynightvibrant_preview.png",
+  "readme": "README.md",
+  "usercss": "Themes/StarryNight/user.css",
+  "schemes": "Themes/StarryNight/color.ini",
+  "include": [
+    "https://raw.githubusercontent.com/ElPioterro/StarryNightVibrant/main/Extensions/theme-vibrant.js"
+  ],
+  "authors": [
+    {
+      "name": "ElPioterro",
+      "url": "https://github.com/ElPioterro"
+    }
+  ],
+  "tags": [
+    "dynamic",
+    "gradient",
+    "cover-art",
+    "animated",
+    "stars",
+    "theme-extension-combo"
+  ]
+}
