@@ -16,7 +16,7 @@ This project is a rework and expansion of the original StarryNight theme concept
 
 ## Note
 
-This extension is designed to work primarily with the accompanying `MyTheme` theme files, which define the necessary CSS variables (`--gradient-main`, `--gradient-secondary`). Using it with other themes might require manual CSS adjustments in those themes.
+This extension is designed to work primarily with the accompanying `StarryNight` theme files, which define the necessary CSS variables (`--gradient-main`, `--gradient-secondary`). Using it with other themes might require manual CSS adjustments in those themes.
 
 ## Tested Environment
 
@@ -30,13 +30,13 @@ _(Compatibility with other versions/platforms may vary.)_
 ## Installation
 
 1.  **Clone/Download:** Get the project files.
-2.  **Copy Theme:** Place the `MyTheme` folder into your Spicetify `Themes` directory.
+2.  **Copy Theme:** Place the `StarryNight` folder into your Spicetify `Themes` directory.
     - _Find your Spicetify directories by running `spicetify -c`._
-3.  **Copy Extension:** Place the final `app.js` (or `extension.js` if you renamed the build output) from the `dist` (or your build output) folder into your Spicetify `Extensions` directory.
+3.  **Copy Extension:** Place the final `theme-vibrant.js` from the `dist` (or your build output) folder into your Spicetify `Extensions` directory.
 4.  **Apply:** Run the following commands in your terminal:
     ```bash
-    spicetify config current_theme MyTheme color_scheme base
-    spicetify config extensions app.js # Or the name you used for the build output
+    spicetify config current_theme StarryNight color_scheme base
+    spicetify config extensions theme-vibrant.js # Or the name you used for the build output
     spicetify backup apply
     ```
     _(Using `backup apply` is recommended to ensure Spotify restarts correctly)._
@@ -53,8 +53,8 @@ If you want to modify the extension (written in TypeScript):
 2.  Install Spicetify Creator: `npm i -g spicetify-creator`
 3.  Navigate to the project directory in your terminal.
 4.  Install dependencies: `yarn install` (or `npm install`)
-5.  Build the extension: `spicetify-creator build-ext` (This will create the `app.js` in the `/dist` folder).
-6.  Copy the built `app.js` to your Spicetify `Extensions` folder.
+5.  Build the extension: `spicetify-creator build-ext` (This will create the `theme-vibrant.js` in the `/dist` folder).
+6.  Copy the built `theme-vibrant.js` to your Spicetify `Extensions` folder.
 7.  Apply changes: `spicetify apply`
 
 ## Useful Links
