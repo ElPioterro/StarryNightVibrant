@@ -33,6 +33,10 @@
   color: var(--spice-sidebar);
 }
 
+div[data-testid="test-ref-div"] {
+  display: none !important;
+}
+
 /* Dynamically set card hover/context menu background */
 .main-card-card:hover,
 .main-card-card[data-context-menu-open="true"] {
@@ -71,9 +75,10 @@
   background-color: #00000000 !important;
 }
 
-/* Remove default background from the Home page header */
+/* Remove default background and image from the Home page header */
 .main-home-homeHeader {
   background-color: #00000000 !important;
+  background-image: none !important; /* Added this line */
 }
 
 /* Make main navigation/library sidebar transparent */
@@ -89,6 +94,12 @@
 
 /* Make the Your Library entry points section transparent */
 .main-yourLibraryX-entryPoints {
+  background-color: #00000000 !important;
+}
+
+/* Make the Your Library container (main content area) transparent */
+/* NOTE: The class 'YourLibraryX' might be specific or dynamic and could break with updates */
+.main-yourLibraryX-libraryContainer.YourLibraryX {
   background-color: #00000000 !important;
 }
 
