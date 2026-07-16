@@ -58,7 +58,6 @@ waitForElement(['.Root__top-container'], ([topContainer]) => {
   document.documentElement.style.setProperty('--spice-main', '#00000000');
   // Alternatively, you can use the keyword 'transparent':
   // document.documentElement.style.setProperty('--spice-main', 'transparent');
-  console.log_debug('StarryNight Theme: --spice-main has been set to transparent globally via theme.js');
 })();
 
   waitForElement(['[data-encore-id="buttonPrimary"]'], ([targetElement]) => {
