@@ -56,16 +56,10 @@ This theme relies on specific CSS variables (`--gradient-main`, `--gradient-seco
 
 ## **Installation (from Marketplace)**
 
-1.  Install the theme directly from the Spicetify Marketplace.
-2.  Select the theme:
-    ```bash
-    spicetify config current_theme "StarryNight Vibrant - Dynamic Gradient" color_scheme base
-    ```
-    _(Replace `base` if you install other color schemes for StarryNight later)._
-3.  Apply the changes:
-    ```bash
-    spicetify apply
-    ```
+1. Open Spotify and go to the **Marketplace** tab in the sidebar.
+2. Search for **"StarryNight Vibrant - Dynamic Gradient"** in the Themes tab.
+3. Click **Install**.
+4. That's it! **Do not run any Spicetify terminal commands** (like `current_theme`), as the Marketplace handles everything automatically.
 
 ## **Configuration**
 
