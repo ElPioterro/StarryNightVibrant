@@ -375,3 +375,9 @@ Pure CSS Shooting Star Animation Effect Copyright (c) 2021 by Delroy Prithvi (ht
     opacity: 0; /* Fade out */
   }
 }
+
+/* Marketplace compatibility: preserve transparent main background */
+:root {
+  --spice-main: transparent !important;
+  --spice-rgb-main: 0, 0, 0 !important;
+}

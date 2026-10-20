@@ -6,7 +6,8 @@
   "usercss": "Themes/StarryNight/user.css",
   "schemes": "Themes/StarryNight/color.ini",
   "include": [
-    "https://raw.githubusercontent.com/ElPioterro/StarryNightVibrant/main/Extensions/theme-vibrant.js"
+    "https://raw.githubusercontent.com/ElPioterro/StarryNightVibrant/main/Extensions/theme-vibrant.js",
+    "https://raw.githubusercontent.com/ElPioterro/StarryNightVibrant/main/Themes/StarryNight/theme.js"
   ],
   "authors": [
     {
