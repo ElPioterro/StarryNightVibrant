@@ -74,10 +74,10 @@ After installation, go to Spicetify's settings menu (**Your Profile Picture -> S
 
 ### Issues after installing from Spicetify Marketplace
 
-If the theme doesn't apply correctly, try running these commands and then re-apply:
+Marketplace only applies themes when Spicetify's `current_theme` is set to `marketplace`. Do **not** set it to this theme's name. If the theme doesn't apply, run:
 
 ```sh
-spicetify config current_theme "StarryNight Vibrant - Dynamic Gradient" color_scheme base # Or your chosen scheme
+spicetify config current_theme marketplace
 spicetify config inject_css 1 replace_colors 1 overwrite_assets 1 inject_theme_js 1
 spicetify apply
 ```
